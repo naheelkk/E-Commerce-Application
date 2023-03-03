@@ -1,16 +1,21 @@
 const db = require('../config/connection')
-
+var collection = require('../config/collections')
 module.exports = {
 
-  addProduct:(product,err,callback)=>{
-    console.log(product);
-    if(err){
-       console.log(err)}
-    else{
-      db.get().collection('product').insertMany(product).then((data)=>{
-      callback(true)
+  addProduct:(product,callback)=>{
+  db.get().collection('product').insertOne(product).then((data)=>{
+        callback(data.ops[0]._id)
 
-    })}
 
+    })
+
+  },
+  
+  getAllProducts:()=>{
+    return new Promise(async(resolve,reject)=>{
+      let products =
+       await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
+      resolve(products)
+    })
   }
 }
