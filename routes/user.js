@@ -1,6 +1,8 @@
+const { response } = require('express');
 var express = require('express');
 var router = express.Router();
-var productHelper = require('../helpers/product-helpers')
+var productHelper = require('../helpers/product-helpers');
+const userHelpers = require('../helpers/user-helpers');
 const userHelper = require('../helpers/user-helpers')
 
 /* GET home page. */
@@ -17,11 +19,23 @@ router.get('/signup',(req,res)=>{
   res.render('user/signup')
 })
 router.post('/signup',(req,res)=>{
-  userHelper.doSignup(req.body).then((response)=>{
+  userHelpers.doSignup(req.body).then((response)=>{
     console.log(response);
-    res.render('/user')
+    
+  })
   })
 
+router.post('/login',(req,res)=>{
+  userHelpers.doLogin(req.body).then((response)=>{
+    if(response.status){
+      res.redirect('/')
+    }
+    else{
+      res.redirect('/login')
+    }
+  })
 })
+
+
 
 module.exports = router;
