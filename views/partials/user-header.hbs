@@ -1,31 +1,37 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">StopForTech</a>
+  <a class="navbar-brand text-primary font-weight-bold" href="/" ><h5>StopForTech & <img src="/images/logo.png" alt="" style="width: 20%;"></h5></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+  <div class="ollapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="/">Categories <span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="#">Cart</a>
+      <a class="nav-item nav-link active" href="/">Products<span class="sr-only">(current)</span></a>
+      {{#if user}}
+      <a class="nav-item nav-link" href="/cart">Cart <span class="badge badge-success" id="cart-count">{{cartCount}}</span></a>
       <a class="nav-item nav-link" href="#">Orders</a>
+      {{/if}}
       {{!-- <a class="nav-item nav-link disabled" href="#">Disabled</a> --}}
     </div>
     {{!-- dropdwon link --}}
 
 <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Account
+    {{#if user}}
+      {{user.name}}
+      {{else}}
+      Account
+    {{/if}}
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {{#if user}}
+    <a class="dropdown-item" href="/logout">Logout</a>
+
+
+    {{else}}
     <a class="dropdown-item" href="/login">Login</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    {{!-- <a class="dropdown-item" href="#">Something else here</a> --}}
-  </div>
-</div>
 
-
-    {{!-- dropdown link --}}
+    {{/if}}
   </div>
 </nav>
 </nav>
