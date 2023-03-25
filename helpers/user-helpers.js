@@ -203,21 +203,20 @@ module.exports = {
             }
           },
           {
-            $project: {
-              item: 1,
-              quantity: 1,
-              product: { $arrayElemAt: ["$product", 0] }
+            $project:{
+              item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
             }
           },
           {
-            $project:{
+            $group:{
+              _id:null,
               total:{$sum:{$multiply:['$quantity','$product.Price']}}
             }
           }
         ])
         .toArray();
-      console.log(total);
-      resolve();
+      console.log(total[0].total);
+      resolve(total[0].total);
     });
   }
 };
