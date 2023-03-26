@@ -6,14 +6,14 @@
           <h2>Enter Delivery Details</h2>
           <div>
             <label for="">Address</label>
-            <input type="text" name="address"  class="form-control">
+            <input type="text" name="address" class="form-control" />
 
             <label for="">Pincode</label>
-            <input type="text" class="form-control" id="pincode" name="pincode">
+            <input type="text" class="form-control" id="pincode" name="pincode" />
 
             <label for="">Mobile</label>
-            <input type="text" name="mobile" class="form-control" id="mobile">
-            <input type="text" name="userId" value="{{user._id}}" hidden>
+            <input type="text" name="mobile" class="form-control" id="mobile" />
+            <input type="text" name="userId" value="{{user._id}}" hidden />
           </div>
         </div>
         <div class="col-md-4">
@@ -21,17 +21,18 @@
             <h5>Total Amount : Rs.
               {{total}}
             </h5>
-            <hr>
+            <hr />
             <div class="payment">
               <p>Payment method</p>
               <label for="" class="radio-inline">
-                <input type="radio" name="payment-method" value="COD" checked>COD
+                <input type="radio" name="payment-method" value="COD" checked />COD
               </label>
-              <br>
+              <br />
               <label for="" class="radio-inline mt-2">
-                <input type="radio" name="payment-method" id="" value="ONLINE">Online payment
+                <input type="radio" name="payment-method" id="" value="ONLINE" />Online payment
               </label>
-              <br> <br>
+              <br />
+              <br />
               <button type="submit" class="btn btn-primary">Checkout</button>
             </div>
           </div>
@@ -41,19 +42,53 @@
   </div>
 </section>
 
+</script>
+
 <script>
-  $("#checkout-form").submit((e)=>{
-    e.preventDefault()
+  $("#checkout-form").submit((e) => {
+    e.preventDefault() 
     $.ajax({
-      url:'/place-order',
-      method:'post',
-      data:$('#checkout-form').serialize(),
-      success:(response)=>{
-        alert(response)
-        if(response.status){
-          location.href = 'order-success'
+      url: '/place-order', method: 'post', data: $('#checkout-form').serialize(),
+      success: (response) => {
+        alert(response) 
+        if (response.codSuccess) {
+          location.href ='order-success'
+        } else { razorpayPayment(response) 
         }
       }
     })
-  })
+  }) 
+  function razorpayPayment(order) {
+    var options = {
+      "key": "rzp_test_CikSzlGa6t6avT", "amount": order.amount,
+      "currency": "INR", "name": "Group4", "description": "", "order_id": order.id,
+      "handler": function (response) {
+      
+
+
+        verifyPayment(response, order)
+      }, "prefill": { 
+        "name": "",
+         "email": "", 
+         "contact": ""
+          },
+      "notes": {
+         "address": "Afras" 
+         }, "theme": {
+           "color": "#F37254" 
+           }
+    }
+    var rzp1 = new Razorpay(options)
+    rzp1.open()
+  }
+  function verifyPayment(payment, order) {
+    $.ajax({
+      url: '/verify-payment',
+      data: {
+        payment,
+        order
+      },
+      method: 'post'
+    })
+  }
 </script>
