@@ -1,14 +1,42 @@
-const { response } = require("express");
 var express = require("express");
 var router = express.Router();
 var productHelper = require('../helpers/product-helpers')
+var adminHelpers = require('../helpers/admin-helpers')
 
-/* GET users listing. */
 router.get("/", function (req, res, next) {
   productHelper.getAllProducts().then((products)=>{
     res.render("admin/view-products", { admin: true, products });
   })
 });
+
+router.get("/admin-login",(req,res)=>{
+  res.render("/admin/login")
+})
+
+// router.get("/admin-login", (req, res, next) => {
+//   if(req.session.admin){
+//     res.redirect("/");
+//   }
+//   else{
+//     res.render("admin/login",{loginErr: req.session.adminLoginErr})
+//     req.session.adminLoginErr = false;
+//   }
+// });
+
+// router.post("/admin-login",(req,res)=>{
+//   adminHelpers.doLogin(req.body).then((response)=>{
+//     if(response.status){
+//       req.session.admin = response.admin
+//       req.session.admin.loggedIn = true;
+//       res.redirect("admin/view-products")
+//     }
+//     else{
+//       req.session.adminLoginErr = true;
+//       res.redirect("/admin-login")
+//     }
+//   })
+// })
+
 router.get("/add-product", function (req, res) {
   res.render("admin/add-product");
 });

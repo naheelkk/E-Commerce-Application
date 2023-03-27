@@ -61,16 +61,19 @@
   function razorpayPayment(order) {
     var options = {
       "key": "rzp_test_CikSzlGa6t6avT", "amount": order.amount,
-      "currency": "INR", "name": "Group4", "description": "", "order_id": order.id,
+      "currency": "INR", 
+      "name": "Group4",
+       "description": "Sample Payment Gateway", 
+       "order_id": order.id,
       "handler": function (response) {
       
 
 
         verifyPayment(response, order)
       }, "prefill": { 
-        "name": "",
-         "email": "", 
-         "contact": ""
+        "name": "naheel",
+         "email": "kknaheel16@gmail.com", 
+         "contact": "7306058768"
           },
       "notes": {
          "address": "Afras" 
@@ -88,7 +91,16 @@
         payment,
         order
       },
-      method: 'post'
+      method: 'post',
+      success:(response)=>{
+        if(response.status){
+          location.href = '/order-success'
+        }
+        else{
+          console.log(response)
+          alert('Payment Failed')
+        }
+      }
     })
   }
 </script>
