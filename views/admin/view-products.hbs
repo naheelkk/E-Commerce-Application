@@ -1,11 +1,8 @@
 <section>
   <div class="container">
-    <div class="row mt-4npm start">
-      <a href="/admin/add-product" class="btn btn-success ml-auto">Add Product</a>
-    </div>
     <div class="row">
      </div>
-     <table class="table mt-5">
+     <table class="table mt-5" id="productsTable">
   <thead>
     <tr>
       <th scope="col">No.</th>
@@ -13,6 +10,7 @@
       <th scope="col">Category</th>
       <th scope="col">Description</th>
       <th scope="col">Image</th>
+      <th scope="col">Options</th>
     </tr>
   </thead>
   <tbody>
@@ -44,3 +42,10 @@ for (var i = 0, len = rows.length; i < len; i++) {
 </script>
   </div>
 </section>
+
+<script>
+  $(function(){
+    $('#productsTable').DataTable();
+
+  })
+</script>
