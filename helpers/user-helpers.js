@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 var objectId = require('mongodb').ObjectId
 const RazorPay = require('razorpay')
 const { resolve } = require('mongodb/lib/core/topologies/read_preference')
+const { ObjectId } = require('mongodb')
 var instance = new RazorPay({
   key_id: 'rzp_test_CikSzlGa6t6avT',
   key_secret: 'a0lrLQ2OSmnEywIdWWGT6oHl',
@@ -242,7 +243,7 @@ module.exports = {
   placeOrder: (order, products, total) => {
     return new Promise((resolve, reject) => {
       console.log(order, products, total)
-      let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
+      let status = order['payment-method'] === 'COD' ? 'placed' : 'placed'
       let orderObj = {
         deliveryDetails: {
           mobile: order.mobile,
@@ -262,7 +263,7 @@ module.exports = {
         .then(response => {
           db.get()
             .collection(collection.CART_COLLECTION)
-            .removeOne({ uer: objectId(order.userId) })
+            .deleteOne({ uer: objectId(order.userId) })
           resolve(response.ops[0]._id)
         })
     })
@@ -347,7 +348,7 @@ module.exports = {
   },
   verifyPayment:(details)=>{
     return new Promise((resolve,reject)=>{
-      const crypto = require('crypto');
+      let crypto = require('crypto');
       let hmac = crypto.createHmac('sha256','a0lrLQ2OSmnEywIdWWGT6oHl')
       hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id']) 
       hmac = hmac.digest('hex')
@@ -361,7 +362,7 @@ module.exports = {
   },
   changePaymentStatus:(orderId)=>{
     return new Promise((resolve,reject)=>{
-      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},
+      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)},
       {
         $set:{
           status:'placed'

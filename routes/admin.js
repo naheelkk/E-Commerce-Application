@@ -37,6 +37,7 @@ router.get("/admin-login",(req,res)=>{
 //   })
 // })
 
+
 router.get("/add-product", function (req, res) {
   res.render("admin/add-product");
 });

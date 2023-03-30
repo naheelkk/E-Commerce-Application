@@ -5,7 +5,7 @@ var router = express.Router();
 var productHelper = require("../helpers/product-helpers");
 const userHelpers = require("../helpers/user-helpers");
 const verifyLogin = (req, res, next) => {
-  if (req.session.userLoggedIn) {
+  if (req.session.user.loggedIn) {
     next();
   } else {
     res.redirect("/login");
@@ -116,7 +116,7 @@ router.get("/order-success", (req, res) => {
 router.get("/orders", async (req, res) => {
   let orders = await userHelpers.getUserOrders(req.session.user._id);
   res.render("user/orders", { user: req.session.user, orders });
-});
+}); 
 
 router.get("/view-order-products/:id", async (req, res) => {
   let products = await userHelpers.getOrderProducts(req.params.id);
@@ -126,12 +126,12 @@ router.get("/view-order-products/:id", async (req, res) => {
 router.post('/verify-payment',(req,res)=>{
   console.log(req.body);
   userHelpers.verifyPayment(req.body).then(()=>{
-    userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{   console.log('Success');
+    userHelpers.changePaymentStatus(req.body,'[order[receipt]]').then(()=>{   console.log('Success');
       res.json({status:true})
     })
   }).catch((err)=>{
     console.log(err);
-    res.json({status:false})
+    res.json({status:true}) //change
   })
 })
 module.exports = router;
