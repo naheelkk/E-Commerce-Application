@@ -44,7 +44,7 @@ npm install
 PORT=3000
 MONGODB_URI=your_mongodb_connection_string
 SESSION_SECRET=your_session_secret
-STRIPE_SECRET_KEY=your_stripe_secret_key
+RazorPay_SECRET_KEY=your_secret_key
 ```
 
 4. Start the application:
